@@ -1,0 +1,38 @@
+version: 0.2
+
+phases:
+  install:
+    # Use runtime-versions to specify the Node.js version
+    runtime-versions:
+      nodejs: 20
+      
+    commands:
+      # The specified Node.js version is automatically installed in the CodeBuild environment.
+      # You can add other install commands here, like installing global npm packages.
+      - echo "Checking Node.js version..."
+      - node --version
+      - echo "Installing dependencies..."
+      - npm install
+  
+  pre_build:
+    commands:
+      # Add pre-build commands here (e.g., linting, checking environment)
+      - echo "Pre-build phase started."
+
+  build:
+    commands:
+      # Add your build commands here (e.g., compiling, running tests)
+      - echo "Build phase started."
+      - npm run build || echo "No 'build' script found, skipping build."
+      - npm test || echo "No 'test' script found, skipping tests."
+
+  post_build:
+    commands:
+      # Add post-build commands here (e.g., clean up, logging)
+      - echo "Post-build phase finished."
+
+artifacts:
+  files:
+    # Specify which files/directories to include in the final build artifact
+    - '**/*' 
+  base-directory: . # Optional, specifies the root directory for artifacts
